@@ -1,0 +1,24 @@
+Improve ParsePics reliability and download UX across five phases.
+
+Phase 1 — Unique output directories:
+- Write each run to result/{name}_{run_id}/ so re-uploads no longer wipe prior results.
+- Expose run_id on FileResult.
+
+Phase 2 — Downloadable ZIP results:
+- Zip each successful result folder and serve GET /download/{folder_name}.
+- Add download_url to API responses and a “下載 ZIP” button in the UI.
+
+Phase 3 — Upload limits and non-blocking process:
+- Enforce 20 files per request, 50 MB per file, and 200 MB total (UI + API).
+- Run process_files via asyncio.to_thread so the event loop stays responsive.
+- Prefer localhost binding guidance (no auth).
+
+Phase 4 — Skip observability and polish:
+- Return skipped_image_count and skip_reasons; log skip/failure paths.
+- Rename Excel output to *_photoattacks.xlsx.
+- Tighten status typing and show a partial badge when images were skipped.
+
+Phase 5 — Documentation:
+- Update README for the new layout, download API, limits, and a “How to experience the changes” walkthrough.
+
+Tests: pytest suite updated/extended; 16 passed.
